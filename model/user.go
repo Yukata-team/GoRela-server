@@ -1,13 +1,15 @@
 package model
 
 type User struct {
-	ID       int    `json:"id" gorm:"primary_key"`
+	ID       int    `json:"id"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
 func CreateUser(user *User) {
-	db.Create(user)
+	dbinstance := Init()
+	dbinstance.Debug().Create(user)
+	//db.Create(user)
 }
 
 // func FindUser(u *User) User {

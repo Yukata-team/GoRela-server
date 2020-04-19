@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"../conf"
-	// _ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
@@ -20,5 +19,6 @@ func Init() *gorm.DB {
 	} else {
 		fmt.Println("DB接続成功")
 	}
+	db.LogMode(true)
 	return db
 }

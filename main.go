@@ -1,7 +1,6 @@
 package main
 
 import (
-	"./model"
 	"./route"
 	"github.com/Sirupsen/logrus"
 	// "github.com/labstack/echo/engine/fasthttp"
@@ -15,7 +14,7 @@ func init() {
 
 func main() {
 	//db接続
-	model.Init()
+	//model.Init()
 
 	router := route.Init()
 

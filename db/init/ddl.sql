@@ -1,7 +1,7 @@
 CREATE DATABASE gorela_db;
 USE gorela_db;
 
-CREATE TABLE `gorela_db`.`User` (
+CREATE TABLE `gorela_db`.`users` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(45) NOT NULL,
   `password` VARCHAR(45) NOT NULL,
