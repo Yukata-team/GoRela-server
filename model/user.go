@@ -7,13 +7,13 @@ type User struct {
 }
 
 func CreateUser(user *User) {
-	dbinstance := Init()
-	dbinstance.Debug().Create(user)
-	//db.Create(user)
+	db := Init()
+	db.Debug().Create(user)
 }
 
-// func FindUser(u *User) User {
-// 	var user User
-// 	db.Where(u).First(&user)
-// 	return user
-// }
+func FindUser(u *User) User {
+	var user User
+	db := Init()
+	db.Where(u).First(&user)
+	return user
+}

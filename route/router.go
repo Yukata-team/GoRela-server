@@ -17,6 +17,7 @@ func Init() *echo.Echo {
 	// ルーティング
 	e.GET("/signup", api.SignupPage())
 	e.POST("/signup", api.Signup)
+	e.POST("/login", api.Login)
 
 	//おまじない
 	return e

@@ -13,9 +13,6 @@ func init() {
 }
 
 func main() {
-	//db接続
-	//model.Init()
-
 	router := route.Init()
 
 	// サーバー起動
