@@ -3,6 +3,7 @@ package api
 import (
 	"fmt"
 	"github.com/Yukata-team/GoRela-server/model"
+	"github.com/labstack/echo/middleware"
 	"golang.org/x/crypto/bcrypt"
 	"log"
 	"net/http"
@@ -19,6 +20,11 @@ type jwtCustomClaims struct {
 }
 
 var signingKey = []byte("secret")
+
+var Config = middleware.JWTConfig{
+	Claims: &jwtCustomClaims{},
+	SigningKey: signingKey,
+}
 
 func SignupPage() echo.HandlerFunc {
 	return func(c echo.Context) error {

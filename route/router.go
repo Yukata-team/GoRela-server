@@ -18,7 +18,6 @@ func Init() *echo.Echo {
 	e.GET("/signup", api.SignupPage())
 	e.POST("/signup", api.Signup)
 	e.POST("/login", api.Login)
-	// TODO ログアウト機能
-	//おまじない
+
 	return e
 }
