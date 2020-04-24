@@ -101,3 +101,11 @@ func Login(c echo.Context) error {
 		"token": t,
 	})
 }
+
+//多分投稿時などの認証用
+func userIDFromToken(c echo.Context) int {
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(*jwtCustomClaims)
+	id := claims.ID
+	return id
+}
