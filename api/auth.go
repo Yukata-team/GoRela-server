@@ -2,6 +2,8 @@ package api
 
 import (
 	"fmt"
+	"golang.org/x/crypto/bcrypt"
+	"log"
 	"net/http"
 	"time"
 
@@ -34,7 +36,18 @@ func Signup(c echo.Context) error {
 		return err
 	}
 
-	fmt.Println(user)
+	//パスワードのハッシュを生成
+	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("パスワード:", user.Password)
+	fmt.Println("ハッシュ化されたパスワード", hash)
+
+	user.Password = string(hash)
+	fmt.Println("コンバート後のパスワード:", user.Password)
 
 	//railsでいう presence：true
 	if user.Email == "" || user.Password == "" {
@@ -45,6 +58,8 @@ func Signup(c echo.Context) error {
 	}
 
 	model.CreateUser(user)
+
+	//DBに登録できたらパスワードをからにしておく
 	user.Password = ""
 
 	return c.JSON(http.StatusCreated, user)
@@ -57,15 +72,16 @@ func Login(c echo.Context) error {
 	}
 
 	//パスワードが一致するかどうか
-	user := model.FindUser(&model.User{ID: u.ID})
-	if user.ID == 0 || user.Password != u.Password {
+	user := model.FindUser(&model.User{Email: u.Email})
+	err := bcrypt.CompareHashAndPassword([]byte(user.Password),[]byte(u.Password))
+	if user.ID == 0 || err != nil {
 		return &echo.HTTPError {
 			Code: http.StatusUnauthorized,
 			Message: "invalid name or password",
 		}
 	}
 
-	//多分jwtを適用してる
+	//claimを生成
 	claims := &jwtCustomClaims{
 		user.ID,
 		user.Email,
@@ -74,6 +90,7 @@ func Login(c echo.Context) error {
 		},
 	}
 
+	//tokenを生成
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	t, err := token.SignedString(signingKey)
 	if err != nil {
