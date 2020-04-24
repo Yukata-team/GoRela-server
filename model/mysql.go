@@ -3,7 +3,7 @@ package model
 import (
 	"fmt"
 
-	"../conf"
+	"github.com/Yukata-team/GoRela-server/conf"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
