@@ -1,9 +1,9 @@
 package main
 
 import (
-	"./route"
 	"github.com/Sirupsen/logrus"
-	// "github.com/labstack/echo/engine/fasthttp"
+	"github.com/Yukata-team/GoRela-server/route"
+
 )
 
 func init() {

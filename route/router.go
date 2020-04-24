@@ -1,7 +1,7 @@
 package route
 
 import (
-	"../api"
+	"github.com/Yukata-team/GoRela-server/api"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )

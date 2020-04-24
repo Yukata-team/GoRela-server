@@ -2,12 +2,12 @@ package api
 
 import (
 	"fmt"
+	"github.com/Yukata-team/GoRela-server/model"
 	"golang.org/x/crypto/bcrypt"
 	"log"
 	"net/http"
 	"time"
 
-	"../model"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo"
 )
