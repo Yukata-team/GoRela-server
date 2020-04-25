@@ -1,7 +1,7 @@
 package route
 
 import (
-	"github.com/Yukata-team/GoRela-server/api"
+	"github.com/Yukata-team/GoRela-server/handler"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )
@@ -15,9 +15,14 @@ func Init() *echo.Echo {
 	e.Use(middleware.Recover())
 
 	// ルーティング
-	e.GET("/signup", api.SignupPage())
-	e.POST("/signup", api.Signup)
-	e.POST("/login", api.Login)
+	e.GET("/signup", handler.SignupPage())
+	e.POST("/signup", handler.Signup)
+	e.POST("/login", handler.Login)
+
+	api := e.Group("/api")
+	//api下はJWTの認証が必要
+	api.Use(middleware.JWTWithConfig(handler.Config))
+	api.POST("/posts", handler.AddPost)
 
 	return e
 }

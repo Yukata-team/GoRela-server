@@ -1,11 +1,12 @@
-module github.com/GoRela-server
+module github.com/Yukata-team/GoRela-server
 
 go 1.14
 
 require (
-	github.com/Yukata-team/GoRela-server v0.0.0-20200424093456-17423c2ac423 // indirect
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
-	github.com/jinzhu/gorm v1.9.12 // indirect
-	github.com/labstack/echo v3.3.10+incompatible // indirect
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/jinzhu/gorm v1.9.12
+	github.com/k0kubun/pp v3.0.1+incompatible
+	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/gommon v0.3.0 // indirect
+	golang.org/x/crypto v0.0.0-20191205180655-e7c4368fe9dd
 )

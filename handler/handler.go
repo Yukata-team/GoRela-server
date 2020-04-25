@@ -2,6 +2,7 @@ package handler
 
 import (
 	"github.com/Yukata-team/GoRela-server/model"
+	"github.com/k0kubun/pp"
 	"github.com/labstack/echo"
 	"net/http"
 )
@@ -11,8 +12,9 @@ func AddPost(c echo.Context) error {
 	if err := c.Bind(post); err != nil {
 		return err
 	}
+	pp.Println(post)
 
-	if post.Title = "" {
+	if post.Title == "" {
 		return &echo.HTTPError{
 			Code:    http.StatusBadRequest,
 			Message: "invalid to or message fields",
