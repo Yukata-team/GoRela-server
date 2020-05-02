@@ -108,7 +108,7 @@ func Login(c echo.Context) error {
 	})
 }
 
-//多分投稿時などの認証用
+//投稿時などに認証トークンからidを持ってくる
 func userIDFromToken(c echo.Context) int {
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(*jwtCustomClaims)

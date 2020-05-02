@@ -22,7 +22,10 @@ func Init() *echo.Echo {
 	api := e.Group("/api")
 	//api下はJWTの認証が必要
 	api.Use(middleware.JWTWithConfig(handler.Config))
+	api.GET("/posts", handler.GetPosts)
 	api.POST("/posts", handler.AddPost)
+	api.DELETE("/posts/:id", handler.DeletePost)
+	api.PUT("/posts/:id", handler.UpdatePost)
 
 	return e
 }
