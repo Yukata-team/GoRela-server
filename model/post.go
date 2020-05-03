@@ -2,11 +2,19 @@ package model
 
 import "fmt"
 
+type Task struct {
+	ID int `json:"id" gorm:"primaly_key"`
+	PostId int `json:"post_id"`
+	Content string `json:"content"`
+	Isdone bool `json:"isdone"`
+}
+
 type Post struct {
 	ID int `json:"id" gorm:"primaly_key"`
 	UserId int `json:"user_id"`
 	Title string `json:"title"`
 	Detail string `json:"detail"`
+	Tasks []Task
 }
 
 type Posts []Post

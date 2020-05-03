@@ -2,6 +2,7 @@ package handler
 
 import (
 	"github.com/Yukata-team/GoRela-server/model"
+	"github.com/k0kubun/pp"
 	"github.com/labstack/echo"
 	"net/http"
 	"strconv"
@@ -9,9 +10,11 @@ import (
 
 func AddPost(c echo.Context) error {
 	post := new(model.Post)
+	pp.Println(post)
 	if err := c.Bind(post); err != nil {
 		return err
 	}
+	pp.Println(post)
 
 	if post.Title == "" {
 		return &echo.HTTPError{
