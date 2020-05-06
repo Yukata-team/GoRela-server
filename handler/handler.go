@@ -103,6 +103,7 @@ func UpdatePost(c echo.Context) error {
 
 	post.Title = npost.Title
 	post.Detail = npost.Detail
+	post.Tasks = npost.Tasks
 
 	if err := model.UpdatePost(&post); err != nil {
 		return echo.ErrNotFound

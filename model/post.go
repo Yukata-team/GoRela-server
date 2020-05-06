@@ -1,6 +1,9 @@
 package model
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/k0kubun/pp"
+)
 
 type Task struct {
 	ID int `json:"id" gorm:"primaly_key"`
@@ -14,7 +17,7 @@ type Post struct {
 	UserId int `json:"user_id"`
 	Title string `json:"title"`
 	Detail string `json:"detail"`
-	Tasks []Task
+	Tasks []Task `json:"tasks" gorm:"foreignkey:PostId"`
 }
 
 type Posts []Post
@@ -27,13 +30,16 @@ func CreatePost (post *Post) {
 func FindPosts(p *Post) Posts {
 	var posts Posts
 	db := Init()
-	db.Where(p).Find(&posts)
+	db.Preload("Tasks").Where(p).Find(&posts)
 	return posts
 }
 
 func DeletePost(p *Post) error {
+	var posts Posts
 	db := Init()
-	if rows := db.Where(p).Delete(&Post{}).RowsAffected; rows == 0 {
+	db.Preload("Tasks").Where(p).Find(&posts)
+	//if rows := db.Delete(&posts).RowsAffected; rows == 0 {
+	if rows := db.Table("posts").Select("posts.*").Joins("left join tasks on tasks.post_id = posts.id").Delete(&posts).RowsAffected; rows == 0 {
 		return fmt.Errorf("Coule not find Post (%v) to delete", p)
 	}
 	return nil
@@ -44,7 +50,9 @@ func UpdatePost(p *Post) error {
 	rows := db.Model(p).Update(map[string]interface{}{
 		"title": p.Title,
 		"detail": p.Detail,
+		//"tasks": p.Tasks,
 	}).RowsAffected
+	pp.Println(p)
 	if rows == 0 {
 		return fmt.Errorf("Could not find Post (%v) to update", p)
 	}
