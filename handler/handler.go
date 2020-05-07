@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"github.com/Yukata-team/GoRela-server/model"
 	"github.com/k0kubun/pp"
 	"github.com/labstack/echo"
@@ -67,7 +68,7 @@ func DeletePost(c echo.Context) error {
 	return c.NoContent(http.StatusNoContent)
 }
 
-func UpdatePost(c echo.Context) error {
+func UpdatePost(c echo.Context) error  {
 	userId := userIDFromToken(c)
 
 	//受け取ったJWT内のユーザーIDがデータベースに存在するか
@@ -101,9 +102,17 @@ func UpdatePost(c echo.Context) error {
 		}
 	}
 
+	fmt.Println(1)
+	for i, task := range post.Tasks {
+		npost.Tasks[i].ID = task.ID
+		pp.Println(npost.Tasks[i])
+	}
 	post.Title = npost.Title
 	post.Detail = npost.Detail
 	post.Tasks = npost.Tasks
+
+	fmt.Println(2)
+	pp.Println(post)
 
 	if err := model.UpdatePost(&post); err != nil {
 		return echo.ErrNotFound

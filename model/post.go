@@ -37,9 +37,7 @@ func FindPosts(p *Post) Posts {
 func DeletePost(p *Post) error {
 	var posts Posts
 	db := Init()
-	db.Preload("Tasks").Where(p).Find(&posts)
-	//if rows := db.Delete(&posts).RowsAffected; rows == 0 {
-	if rows := db.Table("posts").Select("posts.*").Joins("left join tasks on tasks.post_id = posts.id").Delete(&posts).RowsAffected; rows == 0 {
+	if rows := db.Delete(&posts).RowsAffected; rows == 0 {
 		return fmt.Errorf("Coule not find Post (%v) to delete", p)
 	}
 	return nil
@@ -47,6 +45,7 @@ func DeletePost(p *Post) error {
 
 func UpdatePost(p *Post) error {
 	db := Init()
+	pp.Println(p)
 	rows := db.Model(p).Update(map[string]interface{}{
 		"title": p.Title,
 		"detail": p.Detail,

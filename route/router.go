@@ -19,13 +19,13 @@ func Init() *echo.Echo {
 	e.POST("/signup", handler.Signup)
 	e.POST("/login", handler.Login)
 
-	api := e.Group("/api")
+	posts := e.Group("/posts")
 	//api下はJWTの認証が必要
-	api.Use(middleware.JWTWithConfig(handler.Config))
-	api.GET("/posts", handler.GetPosts)
-	api.POST("/posts", handler.AddPost)
-	api.DELETE("/posts/:id", handler.DeletePost)
-	api.PUT("/posts/:id", handler.UpdatePost)
+	posts.Use(middleware.JWTWithConfig(handler.Config))
+	posts.GET("", handler.GetPosts)
+	posts.POST("", handler.AddPost)
+	posts.DELETE("/:id", handler.DeletePost)
+	posts.PUT("/:id", handler.UpdatePost)
 
 	return e
 }
