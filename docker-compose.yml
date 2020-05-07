@@ -12,3 +12,10 @@ services:
     ports:
       - '3306:3306'
     container_name: docker_mysql_mysql_1
+    build: ./docker/mysql
+
+  golang: # service名
+    build: ./docker/golang # ビルドに使用するDockerfileがあるディレクトリ指定
+    tty: true # コンテナの起動永続化
+    volumes:
+      - .:/go/src/work # マウントディレクトリ指定
