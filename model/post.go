@@ -1,22 +1,13 @@
 package model
 
-import (
-	"fmt"
-	"github.com/k0kubun/pp"
-)
-
-type Task struct {
-	ID int `json:"id" gorm:"primaly_key"`
-	PostId int `json:"post_id"`
-	Content string `json:"content"`
-	Isdone bool `json:"isdone"`
-}
+import "fmt"
 
 type Post struct {
 	ID int `json:"id" gorm:"primaly_key"`
 	UserId int `json:"user_id"`
 	Title string `json:"title"`
 	Detail string `json:"detail"`
+	Limit string `json:"limit"`
 	Tasks []Task `json:"tasks" gorm:"foreignkey:PostId"`
 }
 
@@ -45,13 +36,10 @@ func DeletePost(p *Post) error {
 
 func UpdatePost(p *Post) error {
 	db := Init()
-	pp.Println(p)
 	rows := db.Model(p).Update(map[string]interface{}{
 		"title": p.Title,
 		"detail": p.Detail,
-		//"tasks": p.Tasks,
 	}).RowsAffected
-	pp.Println(p)
 	if rows == 0 {
 		return fmt.Errorf("Could not find Post (%v) to update", p)
 	}
