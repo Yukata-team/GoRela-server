@@ -8,6 +8,8 @@ WORKDIR /go/src/github.com/Yukata-team/GoRela-server
 # ホストのファイルをコンテナの作業ディレクトリに移行
 ADD . /go/src/work
 
+EXPOSE 1323
+
 RUN go get github.com/dgrijalva/jwt-go
 RUN	go get github.com/jinzhu/gorm
 RUN	go get github.com/k0kubun/pp
