@@ -11,11 +11,9 @@ import (
 
 func AddPost(c echo.Context) error {
 	post := new(model.Post)
-	pp.Println(post)
 	if err := c.Bind(post); err != nil {
 		return err
 	}
-	pp.Println(post)
 
 	if post.Title == "" {
 		return &echo.HTTPError{
@@ -119,4 +117,41 @@ func UpdatePost(c echo.Context) error  {
 	}
 
 	return c.NoContent(http.StatusNoContent)
+}
+
+func AddComment(c echo.Context) error {
+
+	comment := new(model.Comment)
+	if err := c.Bind(comment); err != nil {
+		return err
+	}
+
+	if comment.Content == "" {
+		return &echo.HTTPError{
+			Code:    http.StatusBadRequest,
+			Message: "invalid to or message fields",
+		}
+	}
+
+	userId := userIDFromToken(c)
+	if user := model.FindUser(&model.User{ID: userId}); user.ID == 0 {
+		return echo.ErrNotFound
+	}
+
+	//指定されたURL上のIDが数字か
+	postID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return echo.ErrNotFound
+	}
+
+	//ユーザーが作成した該当IDのPostがデータベース上に存在するか
+	posts := model.FindPosts(&model.Post{ID: postID, UserId: userId})
+	if len(posts) == 0 {
+		return echo.ErrNotFound
+	}
+
+	comment.UserId = userId
+	model.CreateComment(comment)
+
+	return c.JSON(http.StatusCreated, comment)
 }

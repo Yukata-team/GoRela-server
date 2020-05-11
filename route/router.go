@@ -20,12 +20,14 @@ func Init() *echo.Echo {
 	e.POST("/login", handler.Login)
 
 	posts := e.Group("/posts")
-	//api下はJWTの認証が必要
+	//posts下はJWTの認証が必要
 	posts.Use(middleware.JWTWithConfig(handler.Config))
 	posts.GET("", handler.GetPosts)
 	posts.POST("", handler.AddPost)
 	posts.DELETE("/:id", handler.DeletePost)
 	posts.PUT("/:id", handler.UpdatePost)
+
+	posts.POST("/:id/comment", handler.AddComment)
 
 	return e
 }
