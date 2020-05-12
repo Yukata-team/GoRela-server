@@ -1,4 +1,3 @@
-# versionは3系が最新版で、versionによって書き方が異なる
 version: "3"
 services:
   mysql:
