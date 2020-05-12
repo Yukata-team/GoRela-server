@@ -40,6 +40,7 @@ func GetPosts(c echo.Context) error {
 	}
 
 	posts := model.FindPosts(&model.Post{UserId: userId})
+
 	return c.JSON(http.StatusOK, posts)
 }
 
@@ -49,7 +50,14 @@ func ShowPost(c echo.Context) error {
 		return echo.ErrNotFound
 	}
 
-	posts := model.FindPosts(&model.Post{UserId: userId})
+	//指定されたURL上のIDが数字か
+	postID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return echo.ErrNotFound
+	}
+
+	posts := model.FindPost(&model.Post{ID: postID})
+
 	return c.JSON(http.StatusOK, posts)
 }
 
