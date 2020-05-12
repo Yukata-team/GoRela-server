@@ -72,7 +72,7 @@ func Signup(c echo.Context) error {
 	if user.ID == 0 {
 		return &echo.HTTPError{
 			Code:    http.StatusBadRequest,
-			Message: "email already has been used",
+			Message: "type:ExistingEmail",
 		}
 	}
 
