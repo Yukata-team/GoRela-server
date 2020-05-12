@@ -43,6 +43,17 @@ func GetPosts(c echo.Context) error {
 	return c.JSON(http.StatusOK, posts)
 }
 
+func ShowPost(c echo.Context) error {
+	userId := userIDFromToken(c)
+	if user := model.FindUser(&model.User{ID: userId}); user.ID == 0 {
+		return echo.ErrNotFound
+	}
+
+	posts := model.FindPosts(&model.Post{UserId: userId})
+	return c.JSON(http.StatusOK, posts)
+}
+
+
 func DeletePost(c echo.Context) error {
 	userId := userIDFromToken(c)
 
@@ -149,8 +160,10 @@ func AddComment(c echo.Context) error {
 	if len(posts) == 0 {
 		return echo.ErrNotFound
 	}
+	post := posts[0]
 
 	comment.UserId = userId
+	comment.PostId = post.ID
 	model.CreateComment(comment)
 
 	return c.JSON(http.StatusCreated, comment)

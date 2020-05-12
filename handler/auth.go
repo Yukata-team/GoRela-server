@@ -68,6 +68,14 @@ func Signup(c echo.Context) error {
 	//DBに登録できたらパスワードをからにしておく
 	user.Password = ""
 
+	//Emailのunique処理
+	if user.ID == 0 {
+		return &echo.HTTPError{
+			Code:    http.StatusBadRequest,
+			Message: "email already has been used",
+		}
+	}
+
 	return c.JSON(http.StatusCreated, user)
 }
 
