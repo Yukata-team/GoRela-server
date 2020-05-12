@@ -4,7 +4,6 @@ import (
 	"github.com/Yukata-team/GoRela-server/handler"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	"net/http"
 )
 
 func Init() *echo.Echo {
@@ -13,8 +12,7 @@ func Init() *echo.Echo {
 
 	// CORSの設定
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"https://labstack.com", "https://labstack.net"},
-		AllowMethods: []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete},
+		AllowOrigins: []string{"*"},
 	}))
 
 	// 全てのリクエストで差し込みたいミドルウェアはここ

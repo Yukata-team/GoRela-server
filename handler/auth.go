@@ -3,7 +3,6 @@ package handler
 import (
 	"fmt"
 	"github.com/Yukata-team/GoRela-server/model"
-	"github.com/k0kubun/pp"
 	"github.com/labstack/echo/middleware"
 	"golang.org/x/crypto/bcrypt"
 	"log"
@@ -39,8 +38,6 @@ func SignupPage() echo.HandlerFunc {
 
 func Signup(c echo.Context) error {
 	user := new(model.User)
-	fmt.Println("userの中身を表示します")
-	pp.Println(user)
 	if err := c.Bind(user); err != nil {
 		return err
 	}
