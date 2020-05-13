@@ -32,8 +32,9 @@ func Init() *echo.Echo {
 	posts.GET("/:id", handler.ShowPost)
 	posts.DELETE("/:id", handler.DeletePost)
 	posts.PUT("/:id", handler.UpdatePost)
-
 	posts.POST("/:id/comment", handler.AddComment)
+	posts.POST("/:id/favorite", handler.AddFavo)
+	posts.DELETE("/:id/favorite", handler.DeleteFavo)
 
 	return e
 }

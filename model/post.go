@@ -37,7 +37,7 @@ func DeletePost(p *Post) error {
 	var posts Posts
 	db := Init()
 	if rows := db.Delete(&posts).RowsAffected; rows == 0 {
-		return fmt.Errorf("Coule not find Post (%v) to delete", p)
+		return fmt.Errorf("Could not find Post (%v) to delete", p)
 	}
 	return nil
 }

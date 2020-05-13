@@ -158,13 +158,13 @@ func AddComment(c echo.Context) error {
 	}
 
 	//指定されたURL上のIDが数字か
-	postID, err := strconv.Atoi(c.Param("id"))
+	postId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return echo.ErrNotFound
 	}
 
 	//ユーザーが作成した該当IDのPostがデータベース上に存在するか
-	posts := model.FindPosts(&model.Post{ID: postID, UserId: userId})
+	posts := model.FindPosts(&model.Post{ID: postId, UserId: userId})
 	if len(posts) == 0 {
 		return echo.ErrNotFound
 	}
@@ -175,4 +175,45 @@ func AddComment(c echo.Context) error {
 	model.CreateComment(comment)
 
 	return c.JSON(http.StatusCreated, comment)
+}
+
+func AddFavo(c echo.Context) error {
+	favo := new(model.Favorite)
+	if err := c.Bind(favo); err != nil {
+		return err
+	}
+
+	userId := userIDFromToken(c)
+	if user := model.FindUser(&model.User{ID: userId}); user.ID == 0 {
+		return echo.ErrNotFound
+	}
+
+	postId, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return echo.ErrNotFound
+	}
+
+	favo.UserId = userId
+	favo.PostId = postId
+	model.CreateFavo(favo)
+
+	return c.JSON(http.StatusCreated, favo)
+}
+
+func DeleteFavo(c echo.Context) error {
+	userId := userIDFromToken(c)
+	if user := model.FindUser(&model.User{ID: userId}); user.ID == 0 {
+		return echo.ErrNotFound
+	}
+
+	postId, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return echo.ErrNotFound
+	}
+
+	if err := model.DeleteFavo(&model.Favorite{PostId: postId, UserId: userId}); err != nil {
+		return echo.ErrNotFound
+	}
+
+	return c.NoContent(http.StatusNoContent)
 }
