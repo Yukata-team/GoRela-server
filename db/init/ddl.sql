@@ -46,5 +46,8 @@ CREATE TABLE `gorela_db`.`comments` (
   `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`));
 
+ALTER TABLE `gorela_db`.`posts`
+ADD COLUMN `limit` DATE NULL DEFAULT NULL AFTER `updated_at`;
+
 
 

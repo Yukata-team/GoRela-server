@@ -34,15 +34,23 @@ func AddPost(c echo.Context) error {
 }
 
 func GetPosts(c echo.Context) error {
-	userId := userIDFromToken(c)
-	if user := model.FindUser(&model.User{ID: userId}); user.ID == 0 {
-		return echo.ErrNotFound
-	}
+	posts := model.FindAllPosts()
 
-	posts := model.FindPosts(&model.Post{UserId: userId})
+
 
 	return c.JSON(http.StatusOK, posts)
 }
+
+//func GetUserPosts(c echo.Context) error {
+//	userId := userIDFromToken(c)
+//	if user := model.FindUser(&model.User{ID: userId}); user.ID == 0 {
+//		return echo.ErrNotFound
+//	}
+//
+//	posts := model.FindPosts(&model.Post{UserId: userId})
+//
+//	return c.JSON(http.StatusOK, posts)
+//}
 
 func ShowPost(c echo.Context) error {
 	userId := userIDFromToken(c)

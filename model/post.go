@@ -1,6 +1,8 @@
 package model
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Post struct {
 	ID int `json:"id" gorm:"primaly_key"`
@@ -10,13 +12,21 @@ type Post struct {
 	Limit string `json:"limit"`
 	Tasks []Task `json:"tasks" gorm:"foreignkey:PostId"`
 	Comments []Comment `json:"comments" gorm:"foreignkey:PostId"`
+	Favorites []Favorite `json:"favorites" gorm:"foreignkey:PostId"`
 }
 
 type Posts []Post
 
-func CreatePost (post *Post) {
+func CreatePost(post *Post) {
 	db := Init()
 	db.Create(post)
+}
+
+func FindAllPosts() Posts {
+	var posts Posts
+	db := Init()
+	db.Preload("Tasks").Preload("Favorites").Find(&posts)
+	return posts
 }
 
 func FindPosts(p *Post) Posts {
