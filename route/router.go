@@ -15,7 +15,7 @@ func Init() *echo.Echo {
 		AllowOrigins: []string{"*"},
 	}))
 
-	// 全てのリクエストで差し込みたいミドルウェアはここ
+	// 全てのリクエストで差し込みたいミドルウェア
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
@@ -25,7 +25,7 @@ func Init() *echo.Echo {
 	e.POST("/login", handler.Login)
 
 	posts := e.Group("/posts")
-	//posts下はJWTの認証が必要
+	// posts下はJWTの認証が必要
 	posts.Use(middleware.JWTWithConfig(handler.Config))
 	posts.GET("", handler.GetPosts)
 	posts.POST("", handler.AddPost)
@@ -37,7 +37,7 @@ func Init() *echo.Echo {
 	posts.DELETE("/:id/favorite", handler.DeleteFavo)
 
 	users := e.Group("/users")
-	//users下はJWTの認証が必要
+	// users下はJWTの認証が必要
 	users.Use(middleware.JWTWithConfig(handler.Config))
 	users.GET("/:id", handler.GetUser)
 

@@ -12,6 +12,7 @@ type Post struct {
 	Limit string `json:"limit"`
 	CreatedAt string `json:"created_at"`
 	UpdatedAt string `json:"updated_at"`
+	User User `json:user gorm:"foreignkey:UserId"`
 	Tasks []Task `json:"tasks" gorm:"foreignkey:PostId"`
 	Comments []Comment `json:"comments" gorm:"foreignkey:PostId"`
 	Favorites []Favorite `json:"favorites" gorm:"foreignkey:PostId"`

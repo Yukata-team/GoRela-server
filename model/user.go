@@ -18,3 +18,10 @@ func FindUser(u *User) User {
 	db.Preload("Posts").Where(u).First(&user)
 	return user
 }
+
+func FindUserOnly(u *User) User {
+	var user User
+	db := Init()
+	db.Where(u).First(&user)
+	return user
+}

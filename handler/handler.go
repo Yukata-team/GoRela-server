@@ -37,19 +37,12 @@ func AddPost(c echo.Context) error {
 func GetPosts(c echo.Context) error {
 	posts := model.FindAllPosts()
 
+	for i:=0; i<len(posts); i++ {
+		posts[i].User = model.FindUserOnly(&model.User{ID: posts[i].UserId})
+	}
+
 	return c.JSON(http.StatusOK, posts)
 }
-
-//func GetUserPosts(c echo.Context) error {
-//	userId := userIDFromToken(c)
-//	if user := model.FindUser(&model.User{ID: userId}); user.ID == 0 {
-//		return echo.ErrNotFound
-//	}
-//
-//	posts := model.FindPosts(&model.Post{UserId: userId})
-//
-//	return c.JSON(http.StatusOK, posts)
-//}
 
 func ShowPost(c echo.Context) error {
 	userId := userIDFromToken(c)
@@ -63,9 +56,10 @@ func ShowPost(c echo.Context) error {
 		return echo.ErrNotFound
 	}
 
-	posts := model.FindPost(&model.Post{ID: postID})
+	post := model.FindPost(&model.Post{ID: postID})
+	post.User = model.FindUserOnly(&model.User{ID: post.UserId})
 
-	return c.JSON(http.StatusOK, posts)
+	return c.JSON(http.StatusOK, post)
 }
 
 
