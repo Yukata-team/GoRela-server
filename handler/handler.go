@@ -9,6 +9,7 @@ import (
 	"strconv"
 )
 
+// Post
 func AddPost(c echo.Context) error {
 	post := new(model.Post)
 	if err := c.Bind(post); err != nil {
@@ -35,8 +36,6 @@ func AddPost(c echo.Context) error {
 
 func GetPosts(c echo.Context) error {
 	posts := model.FindAllPosts()
-
-
 
 	return c.JSON(http.StatusOK, posts)
 }
@@ -224,4 +223,18 @@ func DeleteFavo(c echo.Context) error {
 	}
 
 	return c.NoContent(http.StatusNoContent)
+}
+
+func GetUser(c echo.Context) error {
+	userID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return echo.ErrNotFound
+	}
+
+	user := model.FindUser(&model.User{ID: userID})
+	if user.ID == 0 {
+		return echo.ErrNotFound
+	}
+
+	return c.JSON(http.StatusOK, user)
 }

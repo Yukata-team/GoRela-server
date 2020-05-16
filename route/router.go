@@ -26,7 +26,7 @@ func Init() *echo.Echo {
 
 	posts := e.Group("/posts")
 	//posts下はJWTの認証が必要
-	posts.Use(middleware.JWTWithConfig(handler.Config))
+	//posts.Use(middleware.JWTWithConfig(handler.Config))
 	posts.GET("", handler.GetPosts)
 	posts.POST("", handler.AddPost)
 	posts.GET("/:id", handler.ShowPost)
@@ -35,6 +35,11 @@ func Init() *echo.Echo {
 	posts.POST("/:id/comment", handler.AddComment)
 	posts.POST("/:id/favorite", handler.AddFavo)
 	posts.DELETE("/:id/favorite", handler.DeleteFavo)
+
+	users := e.Group("/users")
+	//users下はJWTの認証が必要
+	users.Use(middleware.JWTWithConfig(handler.Config))
+	users.GET("/:id", handler.GetUser)
 
 	return e
 }

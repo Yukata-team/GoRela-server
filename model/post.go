@@ -10,6 +10,8 @@ type Post struct {
 	Title string `json:"title"`
 	Detail string `json:"detail"`
 	Limit string `json:"limit"`
+	CreatedAt string `json:"created_at"`
+	UpdatedAt string `json:"updated_at"`
 	Tasks []Task `json:"tasks" gorm:"foreignkey:PostId"`
 	Comments []Comment `json:"comments" gorm:"foreignkey:PostId"`
 	Favorites []Favorite `json:"favorites" gorm:"foreignkey:PostId"`
@@ -39,7 +41,7 @@ func FindPosts(p *Post) Posts {
 func FindPost(p *Post) Post {
 	var post Post
 	db := Init()
-	db.Preload("Comments").Where(p).Find(&post)
+	db.Preload("Tasks").Preload("Comments").Where(p).Find(&post)
 	return post
 }
 

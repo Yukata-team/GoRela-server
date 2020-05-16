@@ -4,6 +4,7 @@ type User struct {
 	ID       int    `json:"id"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
+	Posts []Post `json:"posts" gorm:"foreignkey:UserId"`
 }
 
 func CreateUser(user *User) {
@@ -14,6 +15,6 @@ func CreateUser(user *User) {
 func FindUser(u *User) User {
 	var user User
 	db := Init()
-	db.Where(u).First(&user)
+	db.Preload("Posts").Where(u).First(&user)
 	return user
 }
