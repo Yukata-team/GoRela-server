@@ -26,7 +26,7 @@ func Init() *echo.Echo {
 
 	posts := e.Group("/posts")
 	//posts下はJWTの認証が必要
-	//posts.Use(middleware.JWTWithConfig(handler.Config))
+	posts.Use(middleware.JWTWithConfig(handler.Config))
 	posts.GET("", handler.GetPosts)
 	posts.POST("", handler.AddPost)
 	posts.GET("/:id", handler.ShowPost)

@@ -171,7 +171,7 @@ func AddComment(c echo.Context) error {
 	}
 
 	//ユーザーが作成した該当IDのPostがデータベース上に存在するか
-	posts := model.FindPosts(&model.Post{ID: postId, UserId: userId})
+	posts := model.FindPosts(&model.Post{ID: postId})
 	if len(posts) == 0 {
 		return echo.ErrNotFound
 	}
