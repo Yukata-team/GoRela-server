@@ -29,6 +29,7 @@ func AddPost(c echo.Context) error {
 	}
 
 	post.UserId = userId
+	pp.Println(post)
 	model.CreatePost(post)
 
 	return c.JSON(http.StatusCreated, post)

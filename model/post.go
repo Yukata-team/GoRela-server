@@ -10,8 +10,8 @@ type Post struct {
 	Title string `json:"title"`
 	Detail string `json:"detail"`
 	Limit string `json:"limit"`
-	CreatedAt string `json:"created_at"`
-	UpdatedAt string `json:"updated_at"`
+	//CreatedAt string `json:"created_at"`
+	//UpdatedAt string `json:"updated_at"`
 	User User `json:user gorm:"foreignkey:UserId"`
 	Tasks []Task `json:"tasks" gorm:"foreignkey:PostId"`
 	Comments []Comment `json:"comments" gorm:"foreignkey:PostId"`

@@ -4,7 +4,7 @@ type Task struct {
 	ID int `json:"id" gorm:"primaly_key"`
 	PostId int `json:"post_id"`
 	Content string `json:"content"`
-	//Isdone bool `json:"isdone"`
+	Isdone bool `json:"isdone"`
 }
 
 //func FindTask(t *Task) Task {ls
