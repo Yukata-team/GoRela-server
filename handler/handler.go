@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"github.com/Yukata-team/GoRela-server/model"
 	"github.com/k0kubun/pp"
 	"github.com/labstack/echo"
@@ -121,7 +120,6 @@ func UpdatePost(c echo.Context) error  {
 		}
 	}
 
-	fmt.Println(1)
 	for i, task := range post.Tasks {
 		npost.Tasks[i].ID = task.ID
 		pp.Println(npost.Tasks[i])
@@ -129,9 +127,6 @@ func UpdatePost(c echo.Context) error  {
 	post.Title = npost.Title
 	post.Detail = npost.Detail
 	post.Tasks = npost.Tasks
-
-	fmt.Println(2)
-	pp.Println(post)
 
 	if err := model.UpdatePost(&post); err != nil {
 		return echo.ErrNotFound
@@ -232,4 +227,26 @@ func GetUser(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, user)
+}
+
+func UpdateTask(c echo.Context) error {
+	taskID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return echo.ErrNotFound
+	}
+
+	task := model.FindTask(&model.Task{ID: taskID})
+	if task.ID == 0 {
+		return echo.ErrNotFound
+	}
+
+	task.IsDone = !task.IsDone
+
+	pp.Println(task)
+
+	if err := model.UpdateTask(&task); err != nil {
+		return echo.ErrNotFound
+	}
+
+	return c.NoContent(http.StatusNoContent)
 }

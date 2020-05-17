@@ -36,6 +36,10 @@ func Init() *echo.Echo {
 	posts.POST("/:id/favorite", handler.AddFavo)
 	posts.DELETE("/:id/favorite", handler.DeleteFavo)
 
+	tasks := e.Group("/tasks")
+	// tasks下はJWTの認証が必要
+	tasks.PUT("/:id", handler.UpdateTask)
+
 	users := e.Group("/users")
 	// users下はJWTの認証が必要
 	users.Use(middleware.JWTWithConfig(handler.Config))
