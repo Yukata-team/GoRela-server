@@ -36,14 +36,14 @@ func FindAllPosts() Posts {
 func FindPosts(p *Post) Posts {
 	var posts Posts
 	db := Init()
-	db.Preload("Tasks").Preload("Favorites").Where(p).Find(&posts)
+	db.Preload("Tasks").Where(p).Find(&posts)
 	return posts
 }
 
 func FindPost(p *Post) Post {
 	var post Post
 	db := Init()
-	db.Preload("Tasks").Preload("Comments").Where(p).Find(&post)
+	db.Preload("Tasks").Preload("Favorites").Preload("Comments").Where(p).Find(&post)
 	return post
 }
 
