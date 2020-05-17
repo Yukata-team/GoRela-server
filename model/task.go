@@ -7,7 +7,7 @@ type Task struct {
 	//Isdone bool `json:"isdone"`
 }
 
-//func FindTask(t *Task) Task {
+//func FindTask(t *Task) Task {ls
 //	var task Task
 //	db := Init()
 //	db.Where(t).Find(&task)
