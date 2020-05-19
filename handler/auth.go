@@ -3,10 +3,12 @@ package handler
 import (
 	"fmt"
 	"github.com/Yukata-team/GoRela-server/model"
+	"github.com/k0kubun/pp"
 	"github.com/labstack/echo/middleware"
 	"golang.org/x/crypto/bcrypt"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -42,7 +44,7 @@ func Signup(c echo.Context) error {
 		return err
 	}
 
-	//パスワードのハッシュを生成
+	// パスワードのハッシュを生成
 	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
 
 	if err != nil {
@@ -55,7 +57,7 @@ func Signup(c echo.Context) error {
 	user.Password = string(hash)
 	fmt.Println("コンバート後のパスワード:", user.Password)
 
-	//railsでいう presence：true
+	// railsでいう presence：true
 	if user.Email == "" || user.Password == "" {
 		return &echo.HTTPError{
 			Code:    http.StatusBadRequest,
@@ -65,10 +67,10 @@ func Signup(c echo.Context) error {
 
 	model.CreateUser(user)
 
-	//DBに登録できたらパスワードをからにしておく
+	// DBに登録できたらパスワードをからにしておく
 	user.Password = ""
 
-	//Emailのunique処理
+	// Emailのunique処理
 	if user.ID == 0 {
 		return &echo.HTTPError{
 			Code:    http.StatusBadRequest,
@@ -76,7 +78,34 @@ func Signup(c echo.Context) error {
 		}
 	}
 
-	return c.JSON(http.StatusCreated, user)
+	// claimを生成
+	claims := &jwtCustomClaims{
+		user.ID,
+		user.Email,
+		jwt.StandardClaims {
+			ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
+		},
+	}
+
+	// tokenを生成
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	t, err := token.SignedString(signingKey)
+	if err != nil {
+		return err
+	}
+
+	// cookieに書き込む
+	cookie := new(http.Cookie)
+	cookie.Name = "current_user_id"
+	cookie.Value = strconv.Itoa(user.ID)
+	cookie.Expires = time.Now().Add(24 * time.Hour)
+	c.SetCookie(cookie)
+
+	pp.Println(user)
+
+	return c.JSON(http.StatusCreated, map[string]string{
+		"token": t,
+	})
 }
 
 func Login(c echo.Context) error {
@@ -85,7 +114,7 @@ func Login(c echo.Context) error {
 		return err
 	}
 
-	//パスワードが一致するかどうか
+	// パスワードが一致するかどうか
 	user := model.FindUser(&model.User{Email: u.Email})
 	err := bcrypt.CompareHashAndPassword([]byte(user.Password),[]byte(u.Password))
 	if user.ID == 0 || err != nil {
@@ -95,7 +124,7 @@ func Login(c echo.Context) error {
 		}
 	}
 
-	//claimを生成
+	// claimを生成
 	claims := &jwtCustomClaims{
 		user.ID,
 		user.Email,
@@ -104,19 +133,26 @@ func Login(c echo.Context) error {
 		},
 	}
 
-	//tokenを生成
+	// tokenを生成
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	t, err := token.SignedString(signingKey)
 	if err != nil {
 		return err
 	}
 
+	// cookieに書き込む
+	cookie := new(http.Cookie)
+	cookie.Name = "current_user_id"
+	cookie.Value = strconv.Itoa(user.ID)
+	cookie.Expires = time.Now().Add(24 * time.Hour)
+	c.SetCookie(cookie)
+
 	return c.JSON(http.StatusOK, map[string]string{
 		"token": t,
 	})
 }
 
-//投稿時などに認証トークンからidを持ってくる
+// 投稿時などに認証トークンからidを持ってくる
 func userIDFromToken(c echo.Context) int {
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(*jwtCustomClaims)

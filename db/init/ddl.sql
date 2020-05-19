@@ -50,4 +50,7 @@ CREATE TABLE `gorela_db`.`comments` (
 ALTER TABLE `gorela_db`.`tasks`
 CHANGE COLUMN `isdone` `is_done` TINYINT NOT NULL DEFAULT '0' ;
 
+ALTER TABLE `gorela_db`.`users`
+ADD COLUMN `name` VARCHAR(45) NULL DEFAULT '名無しさん' AFTER `password`;
+
 
