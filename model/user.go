@@ -4,7 +4,8 @@ type User struct {
 	ID       int    `json:"id"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
-	Posts []Post `json:"posts" gorm:"foreignkey:UserId"`
+	Name 	 string `json:"name"`
+	Posts 	[]Post 	`json:"posts" gorm:"foreignkey:UserId"`
 }
 
 func CreateUser(user *User) {
