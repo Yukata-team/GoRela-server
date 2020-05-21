@@ -16,7 +16,7 @@ func CreateUser(user *User) {
 func FindUser(u *User) User {
 	var user User
 	db := Init()
-	db.Preload("Posts").Where(u).First(&user)
+	db.Preload("Posts").Preload("Posts.Tasks").Preload("Posts.Favorites").Preload("Posts.Comments").Where(u).First(&user)
 	return user
 }
 

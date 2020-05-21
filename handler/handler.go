@@ -23,7 +23,7 @@ func AddPost(c echo.Context) error {
 	}
 
 	userId := userIDFromToken(c)
-	if user := model.FindUser(&model.User{ID: userId}); user.ID == 0 {
+	if user := model.FindUserOnly(&model.User{ID: userId}); user.ID == 0 {
 		return echo.ErrNotFound
 	}
 
@@ -46,7 +46,7 @@ func GetPosts(c echo.Context) error {
 
 func ShowPost(c echo.Context) error {
 	userId := userIDFromToken(c)
-	if user := model.FindUser(&model.User{ID: userId}); user.ID == 0 {
+	if user := model.FindUserOnly(&model.User{ID: userId}); user.ID == 0 {
 		return echo.ErrNotFound
 	}
 
@@ -67,7 +67,7 @@ func DeletePost(c echo.Context) error {
 	userId := userIDFromToken(c)
 
 	//受け取ったJWT内のユーザーIDがデータベースに存在するか
-	if user := model.FindUser(&model.User{ID: userId}); user.ID == 0 {
+	if user := model.FindUserOnly(&model.User{ID: userId}); user.ID == 0 {
 		return echo.ErrNotFound
 	}
 
@@ -90,7 +90,7 @@ func UpdatePost(c echo.Context) error  {
 	userId := userIDFromToken(c)
 
 	//受け取ったJWT内のユーザーIDがデータベースに存在するか
-	if user := model.FindUser(&model.User{ID: userId}); user.ID == 0 {
+	if user := model.FindUserOnly(&model.User{ID: userId}); user.ID == 0 {
 		return echo.ErrNotFound
 	}
 
@@ -150,7 +150,7 @@ func AddComment(c echo.Context) error {
 	}
 
 	userId := userIDFromToken(c)
-	if user := model.FindUser(&model.User{ID: userId}); user.ID == 0 {
+	if user := model.FindUserOnly(&model.User{ID: userId}); user.ID == 0 {
 		return echo.ErrNotFound
 	}
 
@@ -181,7 +181,7 @@ func AddFavo(c echo.Context) error {
 	}
 
 	userId := userIDFromToken(c)
-	if user := model.FindUser(&model.User{ID: userId}); user.ID == 0 {
+	if user := model.FindUserOnly(&model.User{ID: userId}); user.ID == 0 {
 		return echo.ErrNotFound
 	}
 
@@ -199,7 +199,7 @@ func AddFavo(c echo.Context) error {
 
 func DeleteFavo(c echo.Context) error {
 	userId := userIDFromToken(c)
-	if user := model.FindUser(&model.User{ID: userId}); user.ID == 0 {
+	if user := model.FindUserOnly(&model.User{ID: userId}); user.ID == 0 {
 		return echo.ErrNotFound
 	}
 

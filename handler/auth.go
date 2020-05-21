@@ -115,7 +115,7 @@ func Login(c echo.Context) error {
 	}
 
 	// パスワードが一致するかどうか
-	user := model.FindUser(&model.User{Email: u.Email})
+	user := model.FindUserOnly(&model.User{Email: u.Email})
 	err := bcrypt.CompareHashAndPassword([]byte(user.Password),[]byte(u.Password))
 	if user.ID == 0 || err != nil {
 		return &echo.HTTPError {

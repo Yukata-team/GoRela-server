@@ -8,5 +8,4 @@ func main() {
 	router := route.Init()
 	// サーバー起動
 	router.Start(":1323")
-	println("a")
 }
