@@ -219,13 +219,27 @@ func DeleteFavo(c echo.Context) error {
 	return c.NoContent(http.StatusNoContent)
 }
 
-func GetUser(c echo.Context) error {
+func GetMyPage(c echo.Context) error {
 	userID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return echo.ErrNotFound
 	}
 
 	user := model.FindUser(&model.User{ID: userID})
+	if user.ID == 0 {
+		return echo.ErrNotFound
+	}
+
+	return c.JSON(http.StatusOK, user)
+}
+
+func GetUser(c echo.Context) error {
+	userID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return echo.ErrNotFound
+	}
+
+	user := model.FindUserOnly(&model.User{ID: userID})
 	if user.ID == 0 {
 		return echo.ErrNotFound
 	}

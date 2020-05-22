@@ -5,6 +5,7 @@ type User struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 	Name 	 string `json:"name"`
+	Introduction string `json:"introduction"`
 	Posts 	[]Post 	`json:"posts" gorm:"foreignkey:UserId"`
 	Follows []Relation `json:"follows" gorm:"foreignkey:FollowUserId"`
 	Followers []Relation `json:"followers" gorm:"foreignkey:FollowedUserId"`
