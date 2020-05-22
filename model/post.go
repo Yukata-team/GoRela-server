@@ -29,6 +29,13 @@ func CreatePost(post *Post) {
 func FindAllPosts() Posts {
 	var posts Posts
 	db := Init()
+	db.Preload("Tasks").Preload("Favorites").Preload("Comments").Order("created_at desc").Find(&posts)
+	return posts
+}
+
+func FindAllPostRanking() Posts {
+	var posts Posts
+	db := Init()
 	db.Preload("Tasks").Preload("Favorites").Preload("Comments").Find(&posts)
 	return posts
 }
@@ -36,7 +43,7 @@ func FindAllPosts() Posts {
 func FindPosts(p *Post) Posts {
 	var posts Posts
 	db := Init()
-	db.Preload("Tasks").Where(p).Find(&posts)
+	db.Preload("Tasks").Where(p).Order("created_at desc").Find(&posts)
 	return posts
 }
 

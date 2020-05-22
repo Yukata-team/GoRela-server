@@ -21,3 +21,8 @@ func DeleteFavo (f *Favorite) error {
 	}
 	return nil
 }
+
+//func CountFavo (f *Favorite) {
+//	db := Init()
+//	db.Where(f).Find(&favo)
+//}

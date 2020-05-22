@@ -219,6 +219,18 @@ func DeleteFavo(c echo.Context) error {
 	return c.NoContent(http.StatusNoContent)
 }
 
+func GetPostRanking(c echo.Context) error {
+	posts := model.FindAllPostRanking()
+
+	for i:=0; i<len(posts); i++ {
+		posts[i].User = model.FindUserOnly(&model.User{ID: posts[i].UserId})
+	}
+
+	return c.JSON(http.StatusOK, posts)
+}
+
+// User
+
 func GetMyPage(c echo.Context) error {
 	userID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

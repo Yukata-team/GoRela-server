@@ -29,6 +29,7 @@ func Init() *echo.Echo {
 	posts.Use(middleware.JWTWithConfig(handler.Config))
 	posts.GET("", handler.GetPosts)
 	posts.POST("", handler.AddPost)
+	posts.POST("/ranking", handler.GetPostRanking)
 	posts.GET("/:id", handler.ShowPost)
 	posts.DELETE("/:id", handler.DeletePost)
 	posts.PUT("/:id", handler.UpdatePost)
