@@ -5,6 +5,7 @@ type Comment struct {
 	PostId int `json:"post_id"`
 	UserId int `json:"user_id"`
 	Content string `json:"content"`
+	User User `json:"user" gorm:"foreignkey:UserId"`
 }
 
 type Comments []Comment

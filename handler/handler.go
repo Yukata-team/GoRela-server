@@ -59,6 +59,10 @@ func ShowPost(c echo.Context) error {
 	post := model.FindPost(&model.Post{ID: postID})
 	post.User = model.FindUserOnly(&model.User{ID: post.UserId})
 
+	for i:=0; i<len(post.Comments); i++ {
+		post.Comments[i].User = model.FindUserOnly(&model.User{ID: post.Comments[i].UserId})
+	}
+
 	return c.JSON(http.StatusOK, post)
 }
 
