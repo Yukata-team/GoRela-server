@@ -211,15 +211,18 @@ func DeleteFavo(c echo.Context) error {
 	return c.NoContent(http.StatusNoContent)
 }
 
-func GetPostRanking(c echo.Context) error {
-	posts := model.FindAllPostRanking()
-
-	for i:=0; i<len(posts); i++ {
-		posts[i].User = model.FindUserOnly(&model.User{ID: posts[i].UserId})
-	}
-
-	return c.JSON(http.StatusOK, posts)
-}
+//func GetPostRanking(c echo.Context) error {
+//	posts := model.FindAllPosts()
+//
+//	for i:=0; i<len(posts); i++ {
+//		posts[i].User = model.FindUserOnly(&model.User{ID: posts[i].UserId})
+//		posts[i].FavoCounts = model.CountFavo(&model.Favorite{PostId: posts[i].ID})
+//	}
+//
+//	posts = model.Preload().
+//
+//	return c.JSON(http.StatusOK, posts)
+//}
 
 // User
 

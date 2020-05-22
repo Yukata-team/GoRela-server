@@ -101,7 +101,6 @@ func Signup(c echo.Context) error {
 	cookie.Name = "current_user_id"
 	cookie.Value = strconv.Itoa(user.ID)
 	cookie.Expires = time.Now().Add(24 * time.Hour)
-	cookie.Path = "/"
 	c.SetCookie(cookie)
 
 	pp.Println(user)
@@ -155,6 +154,17 @@ func Login(c echo.Context) error {
 		"token": t,
 		"user_id": strconv.Itoa(user.ID),
 	})
+}
+
+func Logout(c echo.Context) error {
+	cookie, err := c.Cookie("current_user_id")
+	if err != nil {
+		return err
+	}
+	cookie.Value = ""
+	c.SetCookie(cookie)
+
+	return c.String(http.StatusOK, "Delete cookie")
 }
 
 // 投稿時などに認証トークンからidを持ってくる

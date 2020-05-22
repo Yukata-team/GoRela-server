@@ -18,7 +18,7 @@ services:
     build: ./docker/golang # ビルドに使用するDockerfileがあるディレクトリ指定
     tty: true # コンテナの起動永続化
     ports:
-      - '1323:1323'
+      - '80:80'
     volumes:
       - .:/go/src/github.com/Yukata-team/GoRela-server # マウントディレクトリ指定
     command: go run main.go

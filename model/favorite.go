@@ -22,7 +22,9 @@ func DeleteFavo (f *Favorite) error {
 	return nil
 }
 
-//func CountFavo (f *Favorite) {
-//	db := Init()
-//	db.Where(f).Find(&favo)
-//}
+func CountFavo (f *Favorite) int {
+	var favo int
+	db := Init()
+	db.Where(f).Count(&favo)
+	return favo
+}

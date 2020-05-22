@@ -17,6 +17,7 @@ type Post struct {
 	Tasks []Task `json:"tasks" gorm:"foreignkey:PostId"`
 	Comments []Comment `json:"comments" gorm:"foreignkey:PostId"`
 	Favorites []Favorite `json:"favorites" gorm:"foreignkey:PostId"`
+	//FavoCounts int `json:"favo_counts"`
 }
 
 type Posts []Post
@@ -33,13 +34,6 @@ func FindAllPosts() Posts {
 	return posts
 }
 
-func FindAllPostRanking() Posts {
-	var posts Posts
-	db := Init()
-	db.Preload("Tasks").Preload("Favorites").Preload("Comments").Find(&posts)
-	return posts
-}
-
 func FindPosts(p *Post) Posts {
 	var posts Posts
 	db := Init()
@@ -53,6 +47,13 @@ func FindPost(p *Post) Post {
 	db.Preload("Tasks").Preload("Favorites").Preload("Comments").Where(p).Order("created_at desc").Find(&post)
 	return post
 }
+
+//func FindPostsByFavo() Posts {
+//	var posts Posts
+//	db := Init()
+//	db.Preload("Tasks").Preload("Favorites").Preload("Comments").Order("favo_counts desc").Find(&posts)
+//	return posts
+//}
 
 func DeletePost(p *Post) error {
 	var posts Posts

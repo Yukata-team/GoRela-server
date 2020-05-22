@@ -23,13 +23,14 @@ func Init() *echo.Echo {
 	e.GET("/signup", handler.SignupPage())
 	e.POST("/signup", handler.Signup)
 	e.POST("/login", handler.Login)
+	e.GET("/logout", handler.Logout)
 
 	posts := e.Group("/posts")
 	// posts下はJWTの認証が必要
 	posts.Use(middleware.JWTWithConfig(handler.Config))
 	posts.GET("", handler.GetPosts)
 	posts.POST("", handler.AddPost)
-	posts.POST("/ranking", handler.GetPostRanking)
+	//posts.GET("/ranking", handler.GetPostRanking)
 	posts.GET("/:id", handler.ShowPost)
 	posts.DELETE("/:id", handler.DeletePost)
 	posts.PUT("/:id", handler.UpdatePost)
