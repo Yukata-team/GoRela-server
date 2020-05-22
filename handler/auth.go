@@ -65,6 +65,8 @@ func Signup(c echo.Context) error {
 		}
 	}
 
+	user.Name = "Noname"
+
 	model.CreateUser(user)
 
 	// DBに登録できたらパスワードをからにしておく
