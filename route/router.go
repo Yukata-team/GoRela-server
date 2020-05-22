@@ -45,5 +45,8 @@ func Init() *echo.Echo {
 	users.Use(middleware.JWTWithConfig(handler.Config))
 	users.GET("/:id", handler.GetUser)
 
+	//
+
+
 	return e
 }

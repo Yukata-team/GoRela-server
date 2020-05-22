@@ -55,3 +55,9 @@ ADD COLUMN `name` VARCHAR(45) NULL DEFAULT '名無しさん' AFTER `password`;
 
 ALTER TABLE `gorela_db`.`users`
 CHANGE COLUMN `name` `name` VARCHAR(45) NULL DEFAULT 'Noname' ;
+
+CREATE TABLE `gorela_db`.`relations` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `follow_user_id` INT NOT NULL,
+  `followed_user_id` INT NOT NULL,
+  PRIMARY KEY (`id`));
