@@ -241,6 +241,7 @@ func GetMyPage(c echo.Context) error {
 	if user.ID == 0 {
 		return echo.ErrNotFound
 	}
+	user.Posts = model.FindPosts(&model.Post{UserId: userID})
 
 	return c.JSON(http.StatusOK, user)
 }
