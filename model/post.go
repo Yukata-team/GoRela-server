@@ -50,7 +50,7 @@ func FindPosts(p *Post) Posts {
 func FindPost(p *Post) Post {
 	var post Post
 	db := Init()
-	db.Preload("Tasks").Preload("Favorites").Preload("Comments").Where(p).Find(&post)
+	db.Preload("Tasks").Preload("Favorites").Preload("Comments").Where(p).Order("created_at desc").Find(&post)
 	return post
 }
 
