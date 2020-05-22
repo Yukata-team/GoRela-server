@@ -105,11 +105,7 @@ func UpdatePost(c echo.Context) error  {
 	}
 
 	//ユーザーが作成した該当IDのPostがデータベース上に存在するか
-	posts := model.FindPosts(&model.Post{ID: postID, UserId: userId})
-	if len(posts) == 0 {
-		return echo.ErrNotFound
-	}
-	post := posts[0]
+	post := model.FindPost(&model.Post{ID: postID, UserId: userId})
 
 	//ユーザーがリクエストしたpost
 	npost := new(model.Post)
@@ -165,11 +161,7 @@ func AddComment(c echo.Context) error {
 	}
 
 	//ユーザーが作成した該当IDのPostがデータベース上に存在するか
-	posts := model.FindPosts(&model.Post{ID: postId})
-	if len(posts) == 0 {
-		return echo.ErrNotFound
-	}
-	post := posts[0]
+	post := model.FindPost(&model.Post{ID: postId})
 
 	comment.UserId = userId
 	comment.PostId = post.ID

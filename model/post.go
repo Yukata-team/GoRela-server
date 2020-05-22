@@ -43,7 +43,7 @@ func FindAllPostRanking() Posts {
 func FindPosts(p *Post) Posts {
 	var posts Posts
 	db := Init()
-	db.Preload("Tasks").Where(p).Order("created_at desc").Find(&posts)
+	db.Preload("Tasks").Preload("Favorites").Preload("Comments").Where(p).Order("created_at desc").Find(&posts)
 	return posts
 }
 
