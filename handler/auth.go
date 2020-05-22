@@ -101,6 +101,7 @@ func Signup(c echo.Context) error {
 	cookie.Name = "current_user_id"
 	cookie.Value = strconv.Itoa(user.ID)
 	cookie.Expires = time.Now().Add(24 * time.Hour)
+	cookie.Path = "/"
 	c.SetCookie(cookie)
 
 	pp.Println(user)
