@@ -280,3 +280,21 @@ func AddRelation(c echo.Context) error {
 
 	return c.JSON(http.StatusCreated, relation)
 }
+
+func DeleteRelation(c echo.Context) error {
+	followID := userIDFromToken(c)
+	if user := model.FindUserOnly(&model.User{ID: followID}); user.ID == 0 {
+		return echo.ErrNotFound
+	}
+
+	followedID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return echo.ErrNotFound
+	}
+
+	if err := model.DeleteRelation(&model.Relation{FollowUserId: followID, FollowedUserId: followedID}); err != nil {
+		return echo.ErrNotFound
+	}
+
+	return c.NoContent(http.StatusNoContent)
+}

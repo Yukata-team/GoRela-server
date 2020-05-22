@@ -1,5 +1,7 @@
 package model
 
+import "fmt"
+
 type Relation struct {
 	ID int `json:"id" gorm:"primaly_key"`
 	FollowUserId int `json:"follow_user_id"`
@@ -11,11 +13,11 @@ func CreateRelation (r *Relation) {
 	db.Create(r)
 }
 
-//func DeleteRelation (r *Relation) error {
-//	var follow Follow
-//	db := Init()
-//	if rows := db.Delete(&follow).RowsAffected; rows == 0 {
-//		return fmt.Errorf("Could not find Favo (%v) to delete", f)
-//	}
-//	return nil
-//}
+func DeleteRelation (r *Relation) error {
+	var relation Relation
+	db := Init()
+	if rows := db.Where(r).Delete(&relation).RowsAffected; rows == 0 {
+		return fmt.Errorf("Could not find Favo (%v) to delete", r)
+	}
+	return nil
+}

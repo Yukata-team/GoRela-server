@@ -45,6 +45,7 @@ func Init() *echo.Echo {
 	users.Use(middleware.JWTWithConfig(handler.Config))
 	users.GET("/:id", handler.GetUser)
 	users.POST("/:id/follow", handler.AddRelation)
+	users.DELETE("/:id/follow", handler.DeleteRelation)
 
 	return e
 }
