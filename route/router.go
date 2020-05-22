@@ -43,8 +43,9 @@ func Init() *echo.Echo {
 	users := e.Group("/users")
 	// users下はJWTの認証が必要
 	users.Use(middleware.JWTWithConfig(handler.Config))
-	users.GET("/:id", handler.GetMyPage)
 	users.GET("/:id/edit", handler.GetUser)
+	users.GET("/:id", handler.GetMyPage)
+	users.PUT("/:id", handler.UpdateUser)
 	users.POST("/:id/follow", handler.AddRelation)
 	users.DELETE("/:id/follow", handler.DeleteRelation)
 

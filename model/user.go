@@ -1,5 +1,7 @@
 package model
 
+import "fmt"
+
 type User struct {
 	ID       int    `json:"id"`
 	Email    string `json:"email"`
@@ -28,4 +30,16 @@ func FindUserOnly(u *User) User {
 	db := Init()
 	db.Where(u).First(&user)
 	return user
+}
+
+func UpdateUser(u *User) error {
+	db := Init()
+	rows := db.Model(u).Update(map[string]interface{}{
+		"name": u.Name,
+		"introduction": u.Introduction,
+	}).RowsAffected
+	if rows == 0 {
+		return fmt.Errorf("Could not find Post (%v) to update", u)
+	}
+	return nil
 }

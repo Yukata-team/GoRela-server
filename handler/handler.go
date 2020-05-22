@@ -247,6 +247,38 @@ func GetUser(c echo.Context) error {
 	return c.JSON(http.StatusOK, user)
 }
 
+func UpdateUser(c echo.Context) error {
+	userId := userIDFromToken(c)
+
+	//受け取ったJWT内のユーザーIDがデータベースに存在するか
+	user := model.FindUserOnly(&model.User{ID: userId})
+	if user.ID == 0 {
+		return echo.ErrNotFound
+	}
+
+	//ユーザーがリクエストしたpost
+	nuser := new(model.User)
+	if err := c.Bind(nuser); err != nil {
+		return err
+	}
+
+	if nuser.Name == "" {
+		return &echo.HTTPError{
+			Code:    http.StatusBadRequest,
+			Message: "NoName",
+		}
+	}
+
+	user.Name = nuser.Name
+	user.Introduction = nuser.Introduction
+
+	if err := model.UpdateUser(&user); err != nil {
+		return echo.ErrNotFound
+	}
+
+	return c.JSON(http.StatusOK, user)
+}
+
 func UpdateTask(c echo.Context) error {
 	taskID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
