@@ -250,3 +250,33 @@ func UpdateTask(c echo.Context) error {
 
 	return c.NoContent(http.StatusNoContent)
 }
+
+func AddRelation(c echo.Context) error {
+	relation := new(model.Relation)
+	if err := c.Bind(relation); err != nil {
+		return err
+	}
+
+	followID := userIDFromToken(c)
+	if user := model.FindUserOnly(&model.User{ID: followID}); user.ID == 0 {
+		return echo.ErrNotFound
+	}
+
+	followedID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return echo.ErrNotFound
+	}
+
+	if followID == followedID {
+		return &echo.HTTPError{
+			Code:    http.StatusBadRequest,
+			Message: "type:FollowingMyself",
+		}
+	}
+
+	relation.FollowUserId = followID
+	relation.FollowedUserId = followedID
+	model.CreateRelation(relation)
+
+	return c.JSON(http.StatusCreated, relation)
+}

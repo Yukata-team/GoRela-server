@@ -6,6 +6,8 @@ type User struct {
 	Password string `json:"password"`
 	Name 	 string `json:"name"`
 	Posts 	[]Post 	`json:"posts" gorm:"foreignkey:UserId"`
+	Follows []Relation `json:"follows" gorm:"foreignkey:FollowUserId"`
+	Followers []Relation `json:"followers" gorm:"foreignkey:FollowedUserId"`
 }
 
 func CreateUser(user *User) {
@@ -16,7 +18,7 @@ func CreateUser(user *User) {
 func FindUser(u *User) User {
 	var user User
 	db := Init()
-	db.Preload("Posts").Preload("Posts.Tasks").Preload("Posts.Favorites").Preload("Posts.Comments").Where(u).First(&user)
+	db.Preload("Follows").Preload("Followers").Preload("Posts").Preload("Posts.Tasks").Preload("Posts.Favorites").Preload("Posts.Comments").Where(u).First(&user)
 	return user
 }
 
